@@ -12,7 +12,9 @@ mongoose.connection.on('error', err => {
 export default class DbContext {
     static async connect() {
         try {
-            let status = await mongoose.connect(process.env.CONNECTION_STRING) //TODO Make sure you set this in .env
+            let dbName = process.env.DBNAME;
+            let connectionString = process.env.CONNECTION_STRING + dbName + "?retryWrites=true&w=majority";
+            let status = await mongoose.connect(connectionString) //TODO Make sure you set this in .env
             console.log("CONNECTED")
             return status
         } catch (e) {
