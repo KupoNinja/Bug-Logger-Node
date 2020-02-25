@@ -22,10 +22,12 @@ class BugService {
   }
 
   async update(bugId, bugData) {
-    // NOTE Still need to test. If bug is closed then return BadRequest("Bug is already closed.")
-    if (bugData.closed) {
+    let bugToUpdate = await _repository.findById(bugId);
+    // @ts-ignore
+    if (bugToUpdate.closed) {
       throw new BadRequest('Bug is already closed.');
     }
+
     return await _repository.findByIdAndUpdate(bugId, bugData, { new: true });
   }
   async closeBug(bugId) {
