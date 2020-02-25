@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Bug from '../models/Bug';
+import { BadRequest } from '../utils/ErrorsService';
 
 const _repository = mongoose.model('Bug', Bug);
 
@@ -9,7 +10,11 @@ class BugService {
   }
 
   async getById(bugId) {
-    return await _repository.findById(bugId);
+    let bug = await _repository.findById(bugId);
+    if (!bug) {
+      throw new BadRequest('Invalid Id.');
+    }
+    return bug;
   }
 
   async create(bugData) {

@@ -31,7 +31,7 @@ export default class BugsController {
 
   async create(req, res, next) {
     try {
-      let createdBug = await bugService.create();
+      let createdBug = await bugService.create(req.body);
       return res.send(createdBug);
     } catch (error) {
       next(error);
