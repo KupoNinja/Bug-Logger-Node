@@ -20,6 +20,12 @@ class BugService {
   async create(bugData) {
     return await _repository.create(bugData);
   }
+
+  async edit(bugId, bugData) {
+    // TODO If bug is closed then return BadRequest("Bug is already closed.")
+    // if ()
+    return await _repository.findByIdAndUpdate(bugId, bugData, { new: true });
+  }
 }
 
 const bugService = new BugService();

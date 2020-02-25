@@ -8,7 +8,8 @@ export default class BugsController {
       //NOTE  each route gets registered as a .get, .post, .put, or .delete, the first parameter of each method is a string to be concatinated onto the base url registered with the route in main. The second parameter is the method that will be run when this route is hit.
       .get('', this.getAll)
       .get('/:id', this.getById)
-      .post('', this.create);
+      .post('', this.create)
+      .put('/:id', this.edit);
   }
 
   async getAll(req, res, next) {
@@ -33,6 +34,15 @@ export default class BugsController {
     try {
       let createdBug = await bugService.create(req.body);
       return res.send(createdBug);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async edit(req, res, next) {
+    try {
+      let updatedBug = await bugService.edit(req.params.id, req.body);
+      return res.send(updatedBug);
     } catch (error) {
       next(error);
     }
