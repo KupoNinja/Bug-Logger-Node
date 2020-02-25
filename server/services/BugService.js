@@ -7,6 +7,14 @@ class BugService {
   async getAll(query) {
     return await _repository.find({ ...query, closed: false });
   }
+
+  async getById(bugId) {
+    return await _repository.findById(bugId);
+  }
+
+  async create(bugData) {
+    return await _repository.create(bugData);
+  }
 }
 
 const bugService = new BugService();
