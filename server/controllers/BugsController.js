@@ -9,7 +9,8 @@ export default class BugsController {
       .get('', this.getAll)
       .get('/:id', this.getById)
       .post('', this.create)
-      .put('/:id', this.edit);
+      .put('/:id', this.edit)
+      .delete('/:id', this.closeBug);
   }
 
   async getAll(req, res, next) {
@@ -43,6 +44,15 @@ export default class BugsController {
     try {
       let updatedBug = await bugService.edit(req.params.id, req.body);
       return res.send(updatedBug);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async closeBug(req, res, next) {
+    try {
+      return await bugService.closeBug(req.params.id);
+      return res.send('This bug is closed!');
     } catch (error) {
       next(error);
     }
