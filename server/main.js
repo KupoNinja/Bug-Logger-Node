@@ -1,8 +1,8 @@
 // NOTE this is essentially the main portion of our server
-import express from "express";
-import cors from "cors";
-import bp from "body-parser";
-import DbContext from "./db/dbConfig";
+import express from 'express';
+import cors from 'cors';
+import bp from 'body-parser';
+import DbContext from './db/dbConfig';
 
 const port = process.env.PORT || 3000;
 
@@ -13,12 +13,12 @@ let server = express();
 DbContext.connect();
 
 //NOTE Creates a reference to the build project on the client (if api only remove this line)
-server.use(express.static(__dirname + "/../dist"));
+server.use(express.static(__dirname + '/../dist'));
 
 //NOTE Allows requests from the port 8080, add additional addresses as needed
-let whitelist = ["http://localhost:8080"];
+let whitelist = ['http://localhost:8080'];
 let corsOptions = {
-  origin: function (origin, callback) {
+  origin: function(origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
     callback(null, originIsWhitelisted);
   },
@@ -35,23 +35,25 @@ server.use(bp.json());
 //NOTE next we want to register all our routes(doorways that can be accessed in our app)
 
 //NOTE we have to import access to our controllers
-import ValuesController from "./controllers/ValuesController";
+import ValuesController from './controllers/ValuesController';
+import BugsController from './controllers/BugsController';
 
 //NOTE remember the forward slash at the start of your path!
-server.use("/api/values", new ValuesController().router);
+server.use('/api/values', new ValuesController().router);
+server.use('/api/bugs', new BugsController().router);
 
 //NOTE Everything below this line always stays the same
 
 // NOTE DO NOT touch! This is for testing only
-import cleanupService from "./utils/CleanupService";
+import cleanupService from './utils/CleanupService';
 server.get('/cleanup', async (req, res, next) => {
   try {
-    let data = await cleanupService.cleanupAsync()
-    res.send(data)
+    let data = await cleanupService.cleanupAsync();
+    res.send(data);
   } catch (e) {
-    next(e)
+    next(e);
   }
-})
+});
 
 //NOTE Default error handler, catches all routes with an error attached
 server.use((error, req, res, next) => {
@@ -60,7 +62,7 @@ server.use((error, req, res, next) => {
 
 //NOTE Catch all to insure to return 404 if recieved a bad route
 server.use((req, res, next) => {
-  res.status(404).send("Route not found");
+  res.status(404).send('Route not found');
 });
 
 server.listen(port, () => {
