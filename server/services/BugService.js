@@ -21,7 +21,7 @@ class BugService {
     return await _repository.create(bugData);
   }
 
-  async edit(bugId, bugData) {
+  async update(bugId, bugData) {
     // NOTE Still need to test. If bug is closed then return BadRequest("Bug is already closed.")
     if (bugData.closed) {
       throw new BadRequest('Bug is already closed.');
