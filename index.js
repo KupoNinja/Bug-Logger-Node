@@ -1,3 +1,4 @@
-require('dotenv').config()
-require = require('esm')(module)
-module.exports = require('./server/main')
+require("dotenv").config();
+// @ts-ignore
+require = require("esm")(module);
+module.exports = require("./server/main");
